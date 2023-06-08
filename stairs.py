@@ -24,7 +24,7 @@ for x in range(4):
     #       worldSpace=1, uvAssignment=0, smoothingAngle=30, fillNgons=1, mergeVertices=1,
     #       mergeVertexTolerance=0.0001, miteringAngle=180, angleTolerance=180, ch=1)
     cubeBaseColorBlinn = cmds.shadingNode("blinn", asShader=True)
-    cmds.setAttr(cubeBaseColorBlinn + '.color', 1, 1, 1) # Black
+    cmds.setAttr(cubeBaseColorBlinn + '.color', 1, 1, 1) # White
     cmds.select('cube_{}'.format(index))
     cmds.hyperShade(assign=cubeBaseColorBlinn)
     cube.translate.set(0, index*0.25, x*cube_size)
@@ -78,11 +78,32 @@ cmds.delete('cube_11.f[3]')
 cmds.select('cube_11.e[0]')
 cmds.polySubdivideEdge(ws=0, s=0, dv=1, ch=1)
 
+cmds.select('cube_11.vtx[7]')
+cmds.move(-2.248, 3.115, 1.377)
+cmds.select('cube_11.vtx[2]')
+cmds.move(-1.508, 3.270, 1.429)
+
+#SET CAMERA POSITION
+
+cmds.select('persp')
+cmds.move(-13.021, 16.090, 7.415)
+cmds.rotate(-49.818, -63.921, -0.898)
+
+
 #CREATE SPHERE
 
 cmds.sphere(name = 'ball', r=0.30  )
 cmds.select('ball')
 cmds.move(-2,3.5,1)
+for i in range (0, 3):
+    for j in range (1, 8):
+        ballBaseColorBlinn = cmds.shadingNode("blinn", asShader=True)
+        if ((j % 2) == 1):
+            cmds.setAttr(ballBaseColorBlinn + '.color', 0, 0, 1) # White
+        else:
+            cmds.setAttr(ballBaseColorBlinn + '.color', 0, 1, 0) # White
+        cmds.select('ball.sf[{}][{}]'.format(i, j))
+        cmds.hyperShade(assign=ballBaseColorBlinn)
 
 #MOVE SPHERE
 
@@ -99,7 +120,7 @@ h = 0
 rx = 0
 rz = 0
 
-for i in range (0, index):
+for i in range (0, index - 1):
     if (id == 0):
         id = 12
     cube_position = pm.PyNode('cube_{}'.format(id - 1)).getTranslation()
@@ -114,19 +135,15 @@ for i in range (0, index):
     if (deltax < -0.5):
         rotatex = 0
         rotatez = 180
-        print("coucou 1")
     if (deltax > 0.5):
         rotatex = 0
         rotatez = -180
-        print("coucou 2")
     if (deltaz > 0.5):
         rotatex = 180
         rotatez = 0
-        print("coucou 3")
     if (deltaz < -0.5):
         rotatex = -180
         rotatez = 0
-        print("coucou 4")
     for time in range (0, 10):
         posx = pos0x + deltax * frame / 24
         #posy = pos0y + deltay * frame / 24
@@ -173,6 +190,8 @@ for i in range (0, index):
     pos0z = posz
     id = id - 1
 
-
-
+for time in range (0, 24):
+    posy = posy - 3 / 24
+    cmds.setKeyframe( 'ball', attribute='translateY', value=posy, t=h )
+    h = h + 1
 
