@@ -89,10 +89,15 @@ cmds.move(-2,3.5,1)
 pos0x = -2
 pos0y = 3.5
 pos0z = 1
+posx = -2
+posy = 3.5
+posz = 1
 tstart = 0
 tframe = 24
 id = index - 1
 h = 0
+rx = 0
+rz = 0
 
 for i in range (0, index):
     if (id == 0):
@@ -101,20 +106,73 @@ for i in range (0, index):
     deltax = cube_position.x - pos0x
     deltay = cube_position.y - pos0y + 0.75
     deltaz = cube_position.z - pos0z
+    print (deltax)
+    print (deltay)
+    print (deltaz)
     print (i)
-    for time in range (0, 24):
-        posx = pos0x + deltax * time / 24
-        posy = pos0y + deltay * time / 24
-        posz = pos0z + deltaz * time / 24
+    frame = 0
+    if (deltax < -0.5):
+        rotatex = 0
+        rotatez = 180
+        print("coucou 1")
+    if (deltax > 0.5):
+        rotatex = 0
+        rotatez = -180
+        print("coucou 2")
+    if (deltaz > 0.5):
+        rotatex = 180
+        rotatez = 0
+        print("coucou 3")
+    if (deltaz < -0.5):
+        rotatex = -180
+        rotatez = 0
+        print("coucou 4")
+    for time in range (0, 10):
+        posx = pos0x + deltax * frame / 24
+        #posy = pos0y + deltay * frame / 24
+        posz = pos0z + deltaz * frame / 24
+        rx = rx + rotatex / 24
+        rz = rz + rotatez / 24
         h = h + 1
         cmds.setKeyframe( 'ball', attribute='translateX', value=posx, t=h )
         cmds.setKeyframe( 'ball', attribute='translateY', value=posy, t=h )
         cmds.setKeyframe( 'ball', attribute='translateZ', value=posz, t=h )
+        cmds.setKeyframe( 'ball', attribute='rotateX', value=rx, t=h )
+        cmds.setKeyframe( 'ball', attribute='rotateZ', value=rz, t=h )
+        frame = frame + 1
+    for time in range (0, 4):
+        posx = pos0x + deltax * frame / 24
+        posy = pos0y + deltay * time / 4
+        posz = pos0z + deltaz * frame / 24
+        rx = rx + rotatex / 24
+        rz = rz + rotatez / 24
+        h = h + 1
+        cmds.setKeyframe( 'ball', attribute='translateX', value=posx, t=h )
+        cmds.setKeyframe( 'ball', attribute='translateY', value=posy, t=h )
+        cmds.setKeyframe( 'ball', attribute='translateZ', value=posz, t=h )
+        cmds.setKeyframe( 'ball', attribute='rotateX', value=rx, t=h )
+        cmds.setKeyframe( 'ball', attribute='rotateZ', value=rz, t=h )
+        frame = frame + 1
+    for time in range (0, 10):
+        posx = pos0x + deltax * frame / 24
+        #posy = pos0y + deltay * frame / 24
+        posz = pos0z + deltaz * frame / 24
+        rx = rx + rotatex / 24
+        rz = rz + rotatez / 24
+        h = h + 1
+        cmds.setKeyframe( 'ball', attribute='translateX', value=posx, t=h )
+        cmds.setKeyframe( 'ball', attribute='translateY', value=posy, t=h )
+        cmds.setKeyframe( 'ball', attribute='translateZ', value=posz, t=h )
+        cmds.setKeyframe( 'ball', attribute='rotateX', value=rx, t=h )
+        cmds.setKeyframe( 'ball', attribute='rotateZ', value=rz, t=h )
+        frame = frame + 1
     tstart = tframe
     tframe = tframe + 24
     pos0x = posx
     pos0y = posy
     pos0z = posz
     id = id - 1
+
+
 
 
