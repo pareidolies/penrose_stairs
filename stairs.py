@@ -20,9 +20,6 @@ for x in range(4):
            name='cube_{}'.format(index),
            width=cube_size, height=cube_size, depth=cube_size,
            sx=1, sy=1, sz=1, ax=(0,1,0), cuv=4, ch=1)[0]
-    #cmds.polyBevel('cube_{}_{}'.format(1, x), com=0, fraction=0.15, offsetAsFraction=1, autoFit=1, segments=5, 
-    #       worldSpace=1, uvAssignment=0, smoothingAngle=30, fillNgons=1, mergeVertices=1,
-    #       mergeVertexTolerance=0.0001, miteringAngle=180, angleTolerance=180, ch=1)
     cubeBaseColorBlinn = cmds.shadingNode("blinn", asShader=True)
     cmds.setAttr(cubeBaseColorBlinn + '.color', 1, 1, 1) # White
     cmds.select('cube_{}'.format(index))
@@ -35,9 +32,6 @@ for y in range(4):
            name='cube_{}'.format(index),
            width=cube_size, height=cube_size, depth=cube_size,
            sx=1, sy=1, sz=1, ax=(0,1,0), cuv=4, ch=1)[0]
-    #cmds.polyBevel('cube_{}_{}'.format(1, x), com=0, fraction=0.15, offsetAsFraction=1, autoFit=1, segments=5, 
-    #       worldSpace=1, uvAssignment=0, smoothingAngle=30, fillNgons=1, mergeVertices=1,
-    #       mergeVertexTolerance=0.0001, miteringAngle=180, angleTolerance=180, ch=1)
     cmds.select('cube_{}'.format(index))
     cmds.hyperShade(assign=cubeBaseColorBlinn)
     cube.translate.set(-(y+1)*(cube_size), index*0.25, 3)
@@ -48,9 +42,6 @@ for v in range(2):
            name='cube_{}'.format(index),
            width=cube_size, height=cube_size, depth=cube_size,
            sx=1, sy=1, sz=1, ax=(0,1,0), cuv=4, ch=1)[0]
-    #cmds.polyBevel('cube_{}_{}'.format(1, x), com=0, fraction=0.15, offsetAsFraction=1, autoFit=1, segments=5, 
-    #       worldSpace=1, uvAssignment=0, smoothingAngle=30, fillNgons=1, mergeVertices=1,
-    #       mergeVertexTolerance=0.0001, miteringAngle=180, angleTolerance=180, ch=1)
     cmds.select('cube_{}'.format(index))
     cmds.hyperShade(assign=cubeBaseColorBlinn)
     cube.translate.set(-4, index*0.25, -(v-2)*cube_size)
@@ -61,9 +52,6 @@ for w in range(2):
            name='cube_{}'.format(index),
            width=cube_size, height=cube_size, depth=cube_size,
            sx=1, sy=1, sz=1, ax=(0,1,0), cuv=4, ch=1)[0]
-    #cmds.polyBevel('cube_{}_{}'.format(1, x), com=0, fraction=0.15, offsetAsFraction=1, autoFit=1, segments=5, 
-    #       worldSpace=1, uvAssignment=0, smoothingAngle=30, fillNgons=1, mergeVertices=1,
-    #       mergeVertexTolerance=0.0001, miteringAngle=180, angleTolerance=180, ch=1)
     cmds.select('cube_{}'.format(index))
     cmds.hyperShade(assign=cubeBaseColorBlinn)
     cube.translate.set((w-3)*(cube_size), index*0.25, 1)
@@ -89,14 +77,34 @@ cmds.select('persp')
 cmds.move(-13.021, 16.090, 7.415)
 cmds.rotate(-49.818, -63.921, -0.898)
 
+cameraT0x = -13.021
+cameraT0y = 16.090
+cameraT0z = 7.415
+cameraR0x = -49.818
+cameraR0y = -63.921
+cameraR0z = -0.898
+
+cameraTx = -10.518
+cameraTy = 2.690
+cameraTz = -15.843
+cameraRx = -5.203
+cameraRy = -153.944
+cameraRz = 0.439
+
+DcameraTx = cameraTx - cameraT0x
+DcameraTy = cameraTy - cameraT0y
+DcameraTz = cameraTz - cameraT0z
+DcameraRx = cameraRx - cameraR0x
+DcameraRy = cameraRy - cameraR0y
+DcameraRz = cameraRz - cameraR0z
 
 #CREATE SPHERE
 
 cmds.sphere(name = 'ball', r=0.30  )
 cmds.select('ball')
 cmds.move(-2,3.5,1)
-for i in range (0, 3):
-    for j in range (1, 8):
+for i in range (0, 4):
+    for j in range (0, 8):
         ballBaseColorBlinn = cmds.shadingNode("blinn", asShader=True)
         if ((j % 2) == 1):
             cmds.setAttr(ballBaseColorBlinn + '.color', 0, 0, 1) # White
@@ -120,6 +128,13 @@ h = 0
 rx = 0
 rz = 0
 
+cmds.setKeyframe( 'persp', attribute='translateX', value=cameraT0x, t=0 )
+cmds.setKeyframe( 'persp', attribute='translateY', value=cameraT0y, t=0 )
+cmds.setKeyframe( 'persp', attribute='translateZ', value=cameraT0z, t=0 )
+cmds.setKeyframe( 'persp', attribute='rotateX', value=cameraR0x, t=0 )
+cmds.setKeyframe( 'persp', attribute='rotateY', value=cameraR0y, t=0 )
+cmds.setKeyframe( 'persp', attribute='rotateZ', value=cameraR0z, t=0 )
+
 for i in range (0, index - 1):
     if (id == 0):
         id = 12
@@ -127,10 +142,6 @@ for i in range (0, index - 1):
     deltax = cube_position.x - pos0x
     deltay = cube_position.y - pos0y + 0.75
     deltaz = cube_position.z - pos0z
-    print (deltax)
-    print (deltay)
-    print (deltaz)
-    print (i)
     frame = 0
     if (deltax < -0.5):
         rotatex = 0
@@ -144,7 +155,7 @@ for i in range (0, index - 1):
     if (deltaz < -0.5):
         rotatex = -180
         rotatez = 0
-    for time in range (0, 10):
+    for time in range (0, 14):
         posx = pos0x + deltax * frame / 24
         #posy = pos0y + deltay * frame / 24
         posz = pos0z + deltaz * frame / 24
@@ -156,6 +167,34 @@ for i in range (0, index - 1):
         cmds.setKeyframe( 'ball', attribute='translateZ', value=posz, t=h )
         cmds.setKeyframe( 'ball', attribute='rotateX', value=rx, t=h )
         cmds.setKeyframe( 'ball', attribute='rotateZ', value=rz, t=h )
+        if (h <= 200):
+            cmds.setKeyframe( 'persp', attribute='translateX', value=cameraT0x, t=h )
+            cmds.setKeyframe( 'persp', attribute='translateY', value=cameraT0y, t=h )
+            cmds.setKeyframe( 'persp', attribute='translateZ', value=cameraT0z, t=h )
+            cmds.setKeyframe( 'persp', attribute='rotateX', value=cameraR0x, t=h )
+            cmds.setKeyframe( 'persp', attribute='rotateY', value=cameraR0y, t=h )
+            cmds.setKeyframe( 'persp', attribute='rotateZ', value=cameraR0z, t=h )
+        elif (h > 200 and h < 260):
+            print(h)
+            cameraT0x = cameraT0x + DcameraTx / 60
+            cameraT0y = cameraT0y + DcameraTy / 60
+            cameraT0z = cameraT0z + DcameraTz / 60
+            cameraR0x = cameraR0x + DcameraRx / 60
+            cameraR0y = cameraR0y + DcameraRy / 60
+            cameraR0z = cameraR0z + DcameraRz / 60
+            cmds.setKeyframe( 'persp', attribute='translateX', value=cameraT0x, t=h )
+            cmds.setKeyframe( 'persp', attribute='translateY', value=cameraT0y, t=h )
+            cmds.setKeyframe( 'persp', attribute='translateZ', value=cameraT0z, t=h )
+            cmds.setKeyframe( 'persp', attribute='rotateX', value=cameraR0x, t=h )
+            cmds.setKeyframe( 'persp', attribute='rotateY', value=cameraR0y, t=h )
+            cmds.setKeyframe( 'persp', attribute='rotateZ', value=cameraR0z, t=h )
+        else:
+            cmds.setKeyframe( 'persp', attribute='translateX', value=cameraTx, t=h )
+            cmds.setKeyframe( 'persp', attribute='translateY', value=cameraTy, t=h )
+            cmds.setKeyframe( 'persp', attribute='translateZ', value=cameraTz, t=h )
+            cmds.setKeyframe( 'persp', attribute='rotateX', value=cameraRx, t=h )
+            cmds.setKeyframe( 'persp', attribute='rotateY', value=cameraRy, t=h )
+            cmds.setKeyframe( 'persp', attribute='rotateZ', value=cameraRz, t=h )
         frame = frame + 1
     for time in range (0, 4):
         posx = pos0x + deltax * frame / 24
@@ -169,8 +208,36 @@ for i in range (0, index - 1):
         cmds.setKeyframe( 'ball', attribute='translateZ', value=posz, t=h )
         cmds.setKeyframe( 'ball', attribute='rotateX', value=rx, t=h )
         cmds.setKeyframe( 'ball', attribute='rotateZ', value=rz, t=h )
+        if (h <= 200):
+            cmds.setKeyframe( 'persp', attribute='translateX', value=cameraT0x, t=h )
+            cmds.setKeyframe( 'persp', attribute='translateY', value=cameraT0y, t=h )
+            cmds.setKeyframe( 'persp', attribute='translateZ', value=cameraT0z, t=h )
+            cmds.setKeyframe( 'persp', attribute='rotateX', value=cameraR0x, t=h )
+            cmds.setKeyframe( 'persp', attribute='rotateY', value=cameraR0y, t=h )
+            cmds.setKeyframe( 'persp', attribute='rotateZ', value=cameraR0z, t=h )
+        elif (h > 200 and h < 260):
+            print(h)
+            cameraT0x = cameraT0x + DcameraTx / 60
+            cameraT0y = cameraT0y + DcameraTy / 60
+            cameraT0z = cameraT0z + DcameraTz / 60
+            cameraR0x = cameraR0x + DcameraRx / 60
+            cameraR0y = cameraR0y + DcameraRy / 60
+            cameraR0z = cameraR0z + DcameraRz / 60
+            cmds.setKeyframe( 'persp', attribute='translateX', value=cameraT0x, t=h )
+            cmds.setKeyframe( 'persp', attribute='translateY', value=cameraT0y, t=h )
+            cmds.setKeyframe( 'persp', attribute='translateZ', value=cameraT0z, t=h )
+            cmds.setKeyframe( 'persp', attribute='rotateX', value=cameraR0x, t=h )
+            cmds.setKeyframe( 'persp', attribute='rotateY', value=cameraR0y, t=h )
+            cmds.setKeyframe( 'persp', attribute='rotateZ', value=cameraR0z, t=h )
+        else:
+            cmds.setKeyframe( 'persp', attribute='translateX', value=cameraTx, t=h )
+            cmds.setKeyframe( 'persp', attribute='translateY', value=cameraTy, t=h )
+            cmds.setKeyframe( 'persp', attribute='translateZ', value=cameraTz, t=h )
+            cmds.setKeyframe( 'persp', attribute='rotateX', value=cameraRx, t=h )
+            cmds.setKeyframe( 'persp', attribute='rotateY', value=cameraRy, t=h )
+            cmds.setKeyframe( 'persp', attribute='rotateZ', value=cameraRz, t=h )
         frame = frame + 1
-    for time in range (0, 10):
+    for time in range (0, 6):
         posx = pos0x + deltax * frame / 24
         #posy = pos0y + deltay * frame / 24
         posz = pos0z + deltaz * frame / 24
@@ -182,6 +249,34 @@ for i in range (0, index - 1):
         cmds.setKeyframe( 'ball', attribute='translateZ', value=posz, t=h )
         cmds.setKeyframe( 'ball', attribute='rotateX', value=rx, t=h )
         cmds.setKeyframe( 'ball', attribute='rotateZ', value=rz, t=h )
+        if (h <= 200):
+            cmds.setKeyframe( 'persp', attribute='translateX', value=cameraT0x, t=h )
+            cmds.setKeyframe( 'persp', attribute='translateY', value=cameraT0y, t=h )
+            cmds.setKeyframe( 'persp', attribute='translateZ', value=cameraT0z, t=h )
+            cmds.setKeyframe( 'persp', attribute='rotateX', value=cameraR0x, t=h )
+            cmds.setKeyframe( 'persp', attribute='rotateY', value=cameraR0y, t=h )
+            cmds.setKeyframe( 'persp', attribute='rotateZ', value=cameraR0z, t=h )
+        elif (h > 200 and h < 260):
+            print(h)
+            cameraT0x = cameraT0x + DcameraTx / 60
+            cameraT0y = cameraT0y + DcameraTy / 60
+            cameraT0z = cameraT0z + DcameraTz / 60
+            cameraR0x = cameraR0x + DcameraRx / 60
+            cameraR0y = cameraR0y + DcameraRy / 60
+            cameraR0z = cameraR0z + DcameraRz / 60
+            cmds.setKeyframe( 'persp', attribute='translateX', value=cameraT0x, t=h )
+            cmds.setKeyframe( 'persp', attribute='translateY', value=cameraT0y, t=h )
+            cmds.setKeyframe( 'persp', attribute='translateZ', value=cameraT0z, t=h )
+            cmds.setKeyframe( 'persp', attribute='rotateX', value=cameraR0x, t=h )
+            cmds.setKeyframe( 'persp', attribute='rotateY', value=cameraR0y, t=h )
+            cmds.setKeyframe( 'persp', attribute='rotateZ', value=cameraR0z, t=h )
+        else:
+            cmds.setKeyframe( 'persp', attribute='translateX', value=cameraTx, t=h )
+            cmds.setKeyframe( 'persp', attribute='translateY', value=cameraTy, t=h )
+            cmds.setKeyframe( 'persp', attribute='translateZ', value=cameraTz, t=h )
+            cmds.setKeyframe( 'persp', attribute='rotateX', value=cameraRx, t=h )
+            cmds.setKeyframe( 'persp', attribute='rotateY', value=cameraRy, t=h )
+            cmds.setKeyframe( 'persp', attribute='rotateZ', value=cameraRz, t=h )
         frame = frame + 1
     tstart = tframe
     tframe = tframe + 24
@@ -190,8 +285,35 @@ for i in range (0, index - 1):
     pos0z = posz
     id = id - 1
 
+for time in range (0, 6):
+    posx = posx - 3 / 24
+    rx = rx + 0 / 24
+    rz = rz + 180 / 24
+    cmds.setKeyframe( 'ball', attribute='rotateX', value=rx, t=h )
+    cmds.setKeyframe( 'ball', attribute='rotateZ', value=rz, t=h )
+    cmds.setKeyframe( 'ball', attribute='translateX', value=posx, t=h )
+    cmds.setKeyframe( 'persp', attribute='translateX', value=cameraTx, t=h )
+    cmds.setKeyframe( 'persp', attribute='translateY', value=cameraTy, t=h )
+    cmds.setKeyframe( 'persp', attribute='translateZ', value=cameraTz, t=h )
+    cmds.setKeyframe( 'persp', attribute='rotateX', value=cameraRx, t=h )
+    cmds.setKeyframe( 'persp', attribute='rotateY', value=cameraRy, t=h )
+    cmds.setKeyframe( 'persp', attribute='rotateZ', value=cameraRz, t=h )
+    h = h + 1
+
 for time in range (0, 24):
     posy = posy - 3 / 24
+    posx = posx - 3 / 100
+    rx = rx + 0 / 24
+    rz = rz + 180 / 24
+    cmds.setKeyframe( 'ball', attribute='rotateX', value=rx, t=h )
+    cmds.setKeyframe( 'ball', attribute='rotateZ', value=rz, t=h )
     cmds.setKeyframe( 'ball', attribute='translateY', value=posy, t=h )
+    cmds.setKeyframe( 'ball', attribute='translateX', value=posx, t=h )
+    cmds.setKeyframe( 'persp', attribute='translateX', value=cameraTx, t=h )
+    cmds.setKeyframe( 'persp', attribute='translateY', value=cameraTy, t=h )
+    cmds.setKeyframe( 'persp', attribute='translateZ', value=cameraTz, t=h )
+    cmds.setKeyframe( 'persp', attribute='rotateX', value=cameraRx, t=h )
+    cmds.setKeyframe( 'persp', attribute='rotateY', value=cameraRy, t=h )
+    cmds.setKeyframe( 'persp', attribute='rotateZ', value=cameraRz, t=h )
     h = h + 1
 
