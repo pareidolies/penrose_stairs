@@ -10,3 +10,5 @@ Divide:
 Edit Mesh > Add Divisions
 
 Bouncing ball example: https://www.youtube.com/watch?v=axQZIiUq68M
+
+Textures : https://www.youtube.com/watch?v=q9DrzNqSDZg
