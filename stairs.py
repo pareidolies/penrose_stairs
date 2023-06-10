@@ -21,7 +21,7 @@ for x in range(4):
            width=cube_size, height=cube_size, depth=cube_size,
            sx=1, sy=1, sz=1, ax=(0,1,0), cuv=4, ch=1)[0]
     cubeBaseColorBlinn = cmds.shadingNode("blinn", asShader=True)
-    cmds.setAttr(cubeBaseColorBlinn + '.color', 1, 1, 1) # White
+    cmds.setAttr(cubeBaseColorBlinn + '.color', 0, 0.05, 0.1) # White
     cmds.select('cube_{}'.format(index))
     cmds.hyperShade(assign=cubeBaseColorBlinn)
     cube.translate.set(0, index*0.25, x*cube_size)
@@ -59,9 +59,12 @@ for w in range(2):
 
 #TRICK FOR PENROSE
 
-cmds.delete('cube_11.f[0]')
-cmds.delete('cube_11.f[2]')
-cmds.delete('cube_11.f[3]')
+cmds.select('cube_11.f[0]')
+cmds.delete()
+cmds.select('cube_11.f[2]')
+cmds.delete()
+cmds.select('cube_11.f[2]')
+cmds.delete()
 
 cmds.select('cube_11.e[0]')
 cmds.polySubdivideEdge(ws=0, s=0, dv=1, ch=1)
@@ -112,6 +115,15 @@ for i in range (0, 4):
             cmds.setAttr(ballBaseColorBlinn + '.color', 0, 1, 0) # White
         cmds.select('ball.sf[{}][{}]'.format(i, j))
         cmds.hyperShade(assign=ballBaseColorBlinn)
+
+texture_path = "C:/Users/sacha/Documents/test3.PNG"
+cmds.select('ball')
+lambert_material = cmds.shadingNode('lambert', asShader=True)
+file_node = cmds.shadingNode('file', asTexture=True)
+cmds.setAttr(file_node + '.fileTextureName', texture_path, type="string")
+cmds.connectAttr(file_node + '.outColor', lambert_material + '.color')
+cmds.select(ball)
+cmds.hyperShade(assign=lambert_material)
 
 #MOVE SPHERE
 
