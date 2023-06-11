@@ -207,7 +207,6 @@ def revealTrick():
                 cmds.setKeyframe( 'persp', attribute='rotateY', value=cameraR0y, t=h )
                 cmds.setKeyframe( 'persp', attribute='rotateZ', value=cameraR0z, t=h )
             elif (h > 200 and h < 260):
-                print(h)
                 cameraT0x = cameraT0x + DcameraTx / 60
                 cameraT0y = cameraT0y + DcameraTy / 60
                 cameraT0z = cameraT0z + DcameraTz / 60
@@ -248,7 +247,6 @@ def revealTrick():
                 cmds.setKeyframe( 'persp', attribute='rotateY', value=cameraR0y, t=h )
                 cmds.setKeyframe( 'persp', attribute='rotateZ', value=cameraR0z, t=h )
             elif (h > 200 and h < 260):
-                print(h)
                 cameraT0x = cameraT0x + DcameraTx / 60
                 cameraT0y = cameraT0y + DcameraTy / 60
                 cameraT0z = cameraT0z + DcameraTz / 60
@@ -289,7 +287,6 @@ def revealTrick():
                 cmds.setKeyframe( 'persp', attribute='rotateY', value=cameraR0y, t=h )
                 cmds.setKeyframe( 'persp', attribute='rotateZ', value=cameraR0z, t=h )
             elif (h > 200 and h < 260):
-                print(h)
                 cameraT0x = cameraT0x + DcameraTx / 60
                 cameraT0y = cameraT0y + DcameraTy / 60
                 cameraT0z = cameraT0z + DcameraTz / 60
@@ -355,7 +352,7 @@ def revealTrick():
 #INTERFACE
 
 def createInterface():
-    myWindow = cmds.window(title="PENROSE", widthHeight=(400, 100))
+    myWindow = cmds.window(title="PENROSE", widthHeight=(300, 100))
     cmds.columnLayout(backgroundColor=(0.2, 0.2, 0.2))
 
     cmds.separator(style='in')
@@ -365,7 +362,7 @@ def createInterface():
     cmds.separator(style='in')
     cmds.separator(style='in')
     
-    cmds.rowColumnLayout(numberOfColumns=3, columnWidth=[(1, 100), (2, 200), (3, 100)])
+    cmds.rowColumnLayout(numberOfColumns=3, columnWidth=[(1, 50), (2, 200), (3, 50)])
     cmds.separator(style='none')
     cmds.button(label="Create impossible Penrose stairs", command="createPenrose()", bgc=(0.9, 0.9, 0.7))
     cmds.separator(style='none')
