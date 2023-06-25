@@ -1,5 +1,7 @@
 # penrose stairs
 
+🚧 refactoring in progress
+
 From persp to orthographic view: 
 https://www.youtube.com/watch?v=kHH9FXmlUKU
 
